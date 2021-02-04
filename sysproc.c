@@ -89,3 +89,22 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+int
+sys_getParentID(void){
+  struct proc*  my_procces=myproc();
+  struct proc* my_parent_procces= my_procces->parent;
+  return my_parent_procces->pid;
+
+}
+
+int 
+sys_getSyscallCounter(void){
+
+  struct proc*  my_procces=myproc();
+  int num;
+
+  if(argint(0, &num) < 0)
+    return -1;
+  return my_procces->callnum[num-1];
+}
