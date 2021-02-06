@@ -184,6 +184,8 @@ UPROGS=\
 	_getParentID\
 	_getParentIDtest\
 	_changePolicy\
+	_changePriority\
+	_ps\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
@@ -256,6 +258,8 @@ EXTRA=\
 	getParentID.c\
 	getParentIDtest.c\
 	changePolicy.c\
+	ps.c\
+	changePriority.c\
 	printf.c umalloc.c\
 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
 	.gdbinit.tmpl gdbutil\

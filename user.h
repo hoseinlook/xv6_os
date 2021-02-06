@@ -25,6 +25,8 @@ int sleep(int);
 int uptime(void);
 int getParentID(void);
 int changePolicy(int);
+int changePriority(int);
+int ps(void);
 
 
 

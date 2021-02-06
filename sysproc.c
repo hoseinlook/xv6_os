@@ -113,3 +113,25 @@ sys_changePolicy(void){
   }
 }
 
+int 
+sys_changePriority(void){
+  int n;
+  if(argint(0, &n) < 0)
+    return -1;
+  if (n <1 || n>6)return -1;
+
+  struct proc*  my_procces=myproc();
+  my_procces->priority=n;
+  return n;
+
+
+}
+
+int
+sys_ps(void){
+  struct proc*  my_procces=myproc();
+  int n= my_procces->priority;
+  return n;
+
+}
+
