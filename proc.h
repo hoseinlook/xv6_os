@@ -2,7 +2,7 @@
 #define P_SCHED 1
 #define ML_SCHED 2
 int MYPOLICY;
-
+int QUANTUM ;
 
 // Per-CPU state
 struct cpu {
@@ -55,6 +55,7 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
+  int priority;
 };
 
 // Process memory is laid out contiguously, low addresses first:
