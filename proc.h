@@ -1,3 +1,9 @@
+#define ROUNDROBIN 0
+#define P_SCHED 1
+#define ML_SCHED 2
+int MYPOLICY;
+
+
 // Per-CPU state
 struct cpu {
   uchar apicid;                // Local APIC ID

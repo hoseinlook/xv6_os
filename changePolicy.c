@@ -1,0 +1,32 @@
+
+#include "types.h"
+#include "stat.h"
+#include "user.h"
+#include "param.h"
+
+
+
+int main(int argc, char *argv[]){
+    
+    
+    if (argc<2){
+        printf(1,"enter a number between 0 and 2");
+        exit();
+    }
+    else{
+       char number_char= *argv[1];
+       int num =(int )number_char -48;
+       printf(1,"your number is %d\n",num);
+       int new_policy=changePolicy(num);
+       printf(1,"new_policy is %d\n",new_policy);
+       
+       exit();
+    }
+
+
+
+return 0;
+
+}
+
+
