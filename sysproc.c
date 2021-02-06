@@ -109,8 +109,7 @@ sys_changePolicy(void){
     return n;
   }
   else{
-
-    return n;
+    return -1;
   }
 }
 
