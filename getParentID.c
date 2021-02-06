@@ -6,7 +6,7 @@
 
 int main(){
     printf(1,"your parentID is %d \n",getParentID());
-    return 0;
+    exit();
 }
 
 
