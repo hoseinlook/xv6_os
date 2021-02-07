@@ -326,7 +326,7 @@ wait(void)
 
 
 int
-wait_and_get_info(int* running_time,int* waiting_time)
+wait_and_get_info(struct times *time)
 {
   struct proc *p;
   int havekids, pid;
@@ -342,9 +342,12 @@ wait_and_get_info(int* running_time,int* waiting_time)
       havekids = 1;
       if(p->state == ZOMBIE){
 
-        *waiting_time= p->termination_time - p->creation_time - p->running_time - p->sleep_time;
-        *running_time=p->running_time;
-
+        time->waitingTime= p->termination_time - p->creation_time - p->running_time - p->sleep_time;
+        time->runningTime=p->running_time;
+        time->creationTime = p->creation_time;
+        time->readyTime = p->ready_time;
+        time->sleepingTime = p->sleep_time;
+        time->terminationTime = p->termination_time;
         // Found one.
         pid = p->pid;
         kfree(p->kstack);
@@ -356,9 +359,7 @@ wait_and_get_info(int* running_time,int* waiting_time)
         p->killed = 0;
         p->state = UNUSED;
 
-        p->creation_time=0;
-        p->termination_time=0;
-        p->running_time=0;
+
 
         release(&ptable.lock);
         return pid;

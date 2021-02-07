@@ -1,5 +1,6 @@
 struct stat;
 struct rtcdate;
+struct times;
 
 // system calls
 int fork(void);
@@ -27,7 +28,7 @@ int getParentID(void);
 int changePolicy(int);
 int changePriority(int);
 int ps(void);
-int wait_and_get_info(int* running_time,int* waiting_time);
+int wait_and_get_info(struct times*);
 int getSyscallCounter(int);
 int getChildren(void);
 

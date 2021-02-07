@@ -9,6 +9,7 @@ struct spinlock;
 struct sleeplock;
 struct stat;
 struct superblock;
+struct times;
 
 // bio.c
 void            binit(void);
@@ -103,7 +104,7 @@ int             pipewrite(struct pipe*, char*, int);
 
 //PAGEBREAK: 16
 // proc.c
-int             wait_and_get_info(int *,int *);
+int             wait_and_get_info(struct times*);
 int             cpuid(void);
 void            exit(void);
 int             fork(void);

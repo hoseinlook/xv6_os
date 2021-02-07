@@ -160,15 +160,9 @@ sys_ps(void){
 int 
 sys_wait_and_get_info(void){
 
-  int *wtime;
-  int *rtime;
-  
-  if(argptr(0, (char**)&wtime, sizeof(int)) < 0)
-    return 12;
-
-  if(argptr(1, (char**)&rtime, sizeof(int)) < 0)
-    return 13;
-
-  return wait_and_get_info(wtime,rtime);
+  struct times* time;
+  argptr(0, (void*) &time, sizeof(time));
+  int pid = waitForChild(time);
+  return pid;
 }
 
