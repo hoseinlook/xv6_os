@@ -98,7 +98,27 @@ sys_getParentID(void){
 
 }
 
-int 
+int
+sys_getSyscallCounter(void)
+{
+  int input;
+  if(argint(0, &input) < 0)
+    return -1;
+  int pid;
+  pid = myproc()->pid;
+  return syscallCounter(input, pid);
+}
+
+
+int
+sys_getChildren(void)
+{
+  int curProcpid;
+  curProcpid = myproc()->pid;
+  return children(curProcpid);
+}
+
+int
 sys_changePolicy(void){
   int n;
 
@@ -140,29 +160,33 @@ sys_ps(void){
 int 
 sys_wait_and_get_info(void){
 
-  int *wtime;
-  int *rtime;
-  int* created_time ;
-  if(argptr(0, (char**)&wtime, sizeof(int)) < 0)
-    return 12;
+  struct times* time;
+  argptr(0, (void*) &time, sizeof(time));
 
-  if(argptr(1, (char**)&rtime, sizeof(int)) < 0)
-    return 13;
-  if(argptr(2, (char**)&created_time, sizeof(int)) < 0)
-    return 14;
-
-  return wait_and_get_info(wtime,rtime,created_time);
+  int pid = wait_and_get_info(time);
+  return pid;
 }
 
-int 
+
+
+int
+sys_changeQuanum(void){
+  int newQuantum ;
+  argint(0, &newQuantum);
+  int result = changeQuantum(newQuantum);
+  return result;
+}
+
+
+int
 sys_get_priority(void){
   return myproc()->priority;
 }
-int 
+int
 sys_test(void){
   return myproc()->running_time;
 }
-int 
+int
 sys_test2(void){
   return ticks;
 }

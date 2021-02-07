@@ -1,5 +1,6 @@
 struct stat;
 struct rtcdate;
+struct times;
 
 // system calls
 int fork(void);
@@ -27,11 +28,13 @@ int getParentID(void);
 int changePolicy(int);
 int changePriority(int);
 int ps(void);
-int wait_and_get_info(int* running_time,int* waiting_time,int* created_time );
+int wait_and_get_info(struct times*);
+int getSyscallCounter(int);
+int getChildren(void);
+int changeQuantum(int);
 int get_priority(void);
 int test(void);
 int test2(void);
-
 
 // ulib.c
 int stat(const char*, struct stat*);

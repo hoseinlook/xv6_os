@@ -35,7 +35,7 @@ cpuid() {
 }
 
 
-void 
+void
 increase_time(void){
 struct proc *p;
 
@@ -49,7 +49,7 @@ struct proc *p;
     if (p->state== RUNNABLE){
       p->waiting_time++;
     }
-   
+
   }
 
   release(&ptable.lock);
@@ -112,7 +112,7 @@ found:
   p->state = EMBRYO;
   p->pid = nextpid++;
 
-  
+
 
   release(&ptable.lock);
 
@@ -349,10 +349,16 @@ wait(void)
   }
 }
 
+int
+changeQuantum(int quantum)
+{
+  QUANTUM = quantum;
+  return QUANTUM;
+}
 
 
 int
-wait_and_get_info(int* running_time,int* waiting_time,int* created_time )
+wait_and_get_info(int* running_time,int* waiting_time)
 {
   struct proc *p;
   int havekids, pid;
@@ -368,10 +374,12 @@ wait_and_get_info(int* running_time,int* waiting_time,int* created_time )
       havekids = 1;
       if(p->state == ZOMBIE){
 
-        *waiting_time= p->waiting_time;
-        *running_time=p->running_time;
-        *created_time =p->creation_time;
-
+        time->waitingTime= p->termination_time - p->creation_time - p->running_time - p->sleep_time;
+        time->runningTime=p->running_time;
+        time->creationTime = p->creation_time;
+        time->readyTime = p->ready_time;
+        time->sleepingTime = p->sleep_time;
+        time->terminationTime = p->termination_time;
         // Found one.
         pid = p->pid;
         kfree(p->kstack);
@@ -384,8 +392,8 @@ wait_and_get_info(int* running_time,int* waiting_time,int* created_time )
         p->state = UNUSED;
 
         p->creation_time=0;
+        p->termination_time=0;
         p->running_time=0;
-        p->waiting_time=0;
 
         release(&ptable.lock);
         return pid;
@@ -702,3 +710,44 @@ procdump(void)
     cprintf("\n");
   }
 }
+
+int
+syscallCounter(int input, int pid)
+{
+  struct proc *p;
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if(p->pid == pid){
+      release(&ptable.lock);
+      return p->callnum[input];
+    }
+  }
+  release(&ptable.lock);
+  return -1;
+}
+
+
+
+int
+children(int pid)
+{
+  struct proc *p;
+  int res = 0;
+  acquire(&ptable.lock);
+  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+    if (p->parent->pid == pid) {
+      if (p->pid < 10) {
+        res *= 10;
+        res += p->pid;
+      } else
+      {
+        res *= 100;
+        res += p->pid;
+      }
+    }
+  }
+  release(&ptable.lock);
+  return res;
+}
+
+

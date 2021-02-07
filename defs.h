@@ -9,6 +9,7 @@ struct spinlock;
 struct sleeplock;
 struct stat;
 struct superblock;
+struct times;
 
 // bio.c
 void            binit(void);
@@ -103,7 +104,7 @@ int             pipewrite(struct pipe*, char*, int);
 
 //PAGEBREAK: 16
 // proc.c
-int             wait_and_get_info(int *,int *,int *);
+int             wait_and_get_info(int *,int *);
 int             cpuid(void);
 void            exit(void);
 int             fork(void);
@@ -122,6 +123,9 @@ int             wait(void);
 void            wakeup(void*);
 void            yield(void);
 void            increase_time(void);
+int             syscallCounter(int, int);
+int             children(int);
+int             changeQuantum(int);
 
 // swtch.S
 void            swtch(struct context**, struct context*);
