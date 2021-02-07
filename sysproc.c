@@ -162,7 +162,7 @@ sys_wait_and_get_info(void){
 
   struct times* time;
   argptr(0, (void*) &time, sizeof(time));
-  int pid = waitForChild(time);
+  int pid = wait_and_get_info(time);
   return pid;
 }
 
