@@ -25,3 +25,7 @@
 #define SYS_changePriority 51
 #define SYS_ps 52
 #define SYS_wait_and_get_info 53
+#define SYS_get_priority 54
+#define SYS_test 55
+#define SYS_test2 56
+

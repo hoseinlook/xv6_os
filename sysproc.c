@@ -142,13 +142,28 @@ sys_wait_and_get_info(void){
 
   int *wtime;
   int *rtime;
-  
+  int* created_time ;
   if(argptr(0, (char**)&wtime, sizeof(int)) < 0)
     return 12;
 
   if(argptr(1, (char**)&rtime, sizeof(int)) < 0)
     return 13;
+  if(argptr(2, (char**)&created_time, sizeof(int)) < 0)
+    return 14;
 
-  return wait_and_get_info(wtime,rtime);
+  return wait_and_get_info(wtime,rtime,created_time);
+}
+
+int 
+sys_get_priority(void){
+  return myproc()->priority;
+}
+int 
+sys_test(void){
+  return myproc()->running_time;
+}
+int 
+sys_test2(void){
+  return ticks;
 }
 

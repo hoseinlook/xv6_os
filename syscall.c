@@ -108,6 +108,9 @@ extern int sys_changePolicy(void);
 extern int sys_changePriority(void);
 extern int sys_ps(void);
 extern int sys_wait_and_get_info(void);
+extern int sys_get_priority(void);
+extern int sys_test(void);
+extern int sys_test2(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -136,7 +139,9 @@ static int (*syscalls[])(void) = {
 [SYS_changePriority] sys_changePriority,
 [SYS_ps] sys_ps,
 [SYS_wait_and_get_info] sys_wait_and_get_info,
-
+[SYS_get_priority]  sys_get_priority,
+[SYS_test] sys_test,
+[SYS_test2] sys_test2,
 };
 
 void

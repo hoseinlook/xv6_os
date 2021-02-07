@@ -103,7 +103,7 @@ int             pipewrite(struct pipe*, char*, int);
 
 //PAGEBREAK: 16
 // proc.c
-int             wait_and_get_info(int *,int *);
+int             wait_and_get_info(int *,int *,int *);
 int             cpuid(void);
 void            exit(void);
 int             fork(void);
@@ -121,6 +121,7 @@ void            userinit(void);
 int             wait(void);
 void            wakeup(void*);
 void            yield(void);
+void            increase_time(void);
 
 // swtch.S
 void            swtch(struct context**, struct context*);
