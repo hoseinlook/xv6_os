@@ -31,7 +31,7 @@ int ps(void);
 int wait_and_get_info(struct times*);
 int getSyscallCounter(int);
 int getChildren(void);
-
+int changeQuantum(int);
 
 // ulib.c
 int stat(const char*, struct stat*);

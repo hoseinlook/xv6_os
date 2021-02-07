@@ -124,6 +124,7 @@ void            wakeup(void*);
 void            yield(void);
 int             syscallCounter(int, int);
 int             children(int);
+int             changeQuantum(int);
 
 // swtch.S
 void            swtch(struct context**, struct context*);

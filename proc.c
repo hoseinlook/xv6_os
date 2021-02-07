@@ -323,6 +323,12 @@ wait(void)
   }
 }
 
+int
+changeQuantum(int quantum)
+{
+  QUANTUM = quantum;
+  return QUANTUM;
+}
 
 
 int
@@ -392,7 +398,7 @@ round_robin( struct cpu * c){
   
     struct proc * p;
     // Enable interrupts on this processor.
-    sti();
+    sti(); 
 
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
@@ -478,7 +484,6 @@ scheduler(void)
   struct cpu *c = mycpu();
   c->proc = 0;
   MYPOLICY=0;
-  QUANTUM=10;
   for(;;){
       switch (MYPOLICY)
       {
@@ -744,3 +749,5 @@ children(int pid)
   release(&ptable.lock);
   return res;
 }
+
+
