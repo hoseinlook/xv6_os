@@ -98,6 +98,26 @@ sys_getParentID(void){
 
 }
 
+int
+sys_getSyscallCounter(void)
+{
+  int input;
+  if(argint(0, &input) < 0)
+    return -1;
+  int pid;
+  pid = myproc()->pid;
+  return syscallCounter(input, pid);
+}
+
+
+int
+sys_getChildren(void)
+{
+  int curProcpid;
+  curProcpid = myproc()->pid;
+  return children(curProcpid);
+}
+
 int 
 sys_changePolicy(void){
   int n;

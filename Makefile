@@ -183,6 +183,8 @@ UPROGS=\
 	_zombie\
 	_getParentID\
 	_getParentIDtest\
+	_getSyscallCounter\
+	_getChildren\
 	_changePolicy\
 	_changePriority\
 	_ps\
@@ -257,6 +259,8 @@ EXTRA=\
 	ln.c ls.c mkdir.c rm.c stressfs.c usertests.c wc.c zombie.c\
 	getParentID.c\
 	getParentIDtest.c\
+	getSyscallCounter.c\
+	getChildren.c\
 	changePolicy.c\
 	ps.c\
 	changePriority.c\

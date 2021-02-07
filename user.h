@@ -28,7 +28,8 @@ int changePolicy(int);
 int changePriority(int);
 int ps(void);
 int wait_and_get_info(int* running_time,int* waiting_time);
-
+int getSyscallCounter(int);
+int getChildren(void);
 
 
 // ulib.c

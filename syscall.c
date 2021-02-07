@@ -105,6 +105,8 @@ extern int sys_write(void);
 extern int sys_uptime(void);
 extern int sys_getParentID(void);
 extern int sys_changePolicy(void);
+extern int sys_getSyscallCounter(void);
+extern int sys_getChildren(void);
 extern int sys_changePriority(void);
 extern int sys_ps(void);
 extern int sys_wait_and_get_info(void);
@@ -132,6 +134,8 @@ static int (*syscalls[])(void) = {
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
 [SYS_getParentID] sys_getParentID,
+[SYS_getSyscallCounter] sys_getSyscallCounter,
+[SYS_getChildren] sys_getChildren,
 [SYS_changePolicy] sys_changePolicy,
 [SYS_changePriority] sys_changePriority,
 [SYS_ps] sys_ps,
@@ -148,6 +152,7 @@ syscall(void)
   num = curproc->tf->eax;
   if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
     curproc->tf->eax = syscalls[num]();
+    curproc->callnum[num]++;
   } else {
     cprintf("%d %s: unknown sys call %d\n",
             curproc->pid, curproc->name, num);

@@ -704,3 +704,42 @@ procdump(void)
     cprintf("\n");
   }
 }
+
+int
+syscallCounter(int input, int pid)
+{
+  struct proc *p;
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if(p->pid == pid){
+      release(&ptable.lock);
+      return p->callnum[input];
+    }
+  }
+  release(&ptable.lock);
+  return -1;
+}
+
+
+
+int
+children(int pid)
+{
+  struct proc *p;
+  int res = 0;
+  acquire(&ptable.lock);
+  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+    if (p->parent->pid == pid) {
+      if (p->pid < 10) {
+        res *= 10;
+        res += p->pid;
+      } else
+      {
+        res *= 100;
+        res += p->pid;
+      }
+    }
+  }
+  release(&ptable.lock);
+  return res;
+}
