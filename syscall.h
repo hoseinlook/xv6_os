@@ -24,3 +24,4 @@
 #define SYS_changePolicy 50
 #define SYS_changePriority 51
 #define SYS_ps 52
+#define SYS_wait_and_get_info 53

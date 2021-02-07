@@ -107,6 +107,7 @@ extern int sys_getParentID(void);
 extern int sys_changePolicy(void);
 extern int sys_changePriority(void);
 extern int sys_ps(void);
+extern int sys_wait_and_get_info(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -134,6 +135,7 @@ static int (*syscalls[])(void) = {
 [SYS_changePolicy] sys_changePolicy,
 [SYS_changePriority] sys_changePriority,
 [SYS_ps] sys_ps,
+[SYS_wait_and_get_info] sys_wait_and_get_info,
 
 };
 
