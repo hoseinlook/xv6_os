@@ -470,29 +470,24 @@ void
 priority_queue( struct cpu * c){
   
     struct proc * p;
-    struct proc * p_loop;
     
     // Enable interrupts on this processor.
     sti();
-    struct proc * p_with_low_priority=NULL; 
+    int flag=1;
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
-    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->state != RUNNABLE)
-        continue;
+    for (int i =-1;i<=20;++i){
+
+    flag=1;
+    while (flag){
+      flag=0;
     
-
-      p_with_low_priority=p;
-
-    for(p_loop = ptable.proc; p_loop < &ptable.proc[NPROC]; p_loop++){
-      if(p_loop->state != RUNNABLE)
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+      if(p->state != RUNNABLE || p->priority!=i)
         continue;
-      if (p_with_low_priority->priority > p_loop ->priority){
-          p_with_low_priority=p_loop;
-      }
-      
-    }
-    p=p_with_low_priority;
+    flag=1;
+
+    
 
   
 
@@ -502,6 +497,7 @@ priority_queue( struct cpu * c){
       c->proc = p;
       switchuvm(p);
       p->state = RUNNING;
+      p->counter=QUANTUM-1;
 
       swtch(&(c->scheduler), p->context);
       switchkvm();
@@ -509,7 +505,7 @@ priority_queue( struct cpu * c){
       // Process is done running for now.
       // It should have changed its p->state before coming back.
       c->proc = 0;
-    }
+    }}}
     release(&ptable.lock);
 
   

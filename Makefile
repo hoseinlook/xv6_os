@@ -190,6 +190,7 @@ UPROGS=\
 	_changeQuantum\
 	_roundRobinTest\
 	_priorityTest\
+	_priority_test\
 	_procInfo\
 	_ps\
 	
@@ -269,6 +270,7 @@ EXTRA=\
 	getChildren.c\
 	changePolicy.c\
 	procInfo.c\
+	priority_test.c\
 	changePriority.c\
 	priorityTest.c\
 	changeQuantum.c\
