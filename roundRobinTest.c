@@ -1,63 +1,92 @@
 #include "types.h"
+#include "stat.h"
 #include "user.h"
 
-struct times {
-    int creationTime;
-    int terminationTime;
-    int sleepingTime;
-    int readyTime;
-    int runningTime;
-    int waitingTime;
-};
+// struct times {
+//     int creationTime;
+//     int terminationTime;
+//     int sleepingTime;
+//     int readyTime;
+//     int runningTime;
+//     int waitingTime;
+// };
 
-int main(void)
-{
-    changePolicy(0);
 
-    int TurnaroundTime = 0;
-    int CBT = 0;
-    int WaitingTime = 0;
 
-    struct times timesArray[10];
-    for (int j = 0; j < 10; j++)
-    {
-        if (fork() == 0)
-        {
-            for (int i = 0; i < 1000; i++)
-                printf(1, "[%d]: [%d] \n", getpid(), i);
-            exit();
+int main(int argc, char *argv[])
+    {   int j;
+
+        int fork_num=100;
+        int loop_count=10;
+        int AVG_TURN[loop_count];
+
+        for (j=0;j<loop_count;j++){
+            changeQuantum(j*10+1);
+            printf(1,"QUANTUM= %d\n",j);
+            printf(1,"*************************\n");
+            printf(1,"your pid =%d\n",getpid());
+            int creation_time=1;
+            int waiting_time=1;
+            int running_time=1;
+            int termination_time=1;
+            int sleeping_time=1;
+            int pid =0;
+            for (int i =0 ; i<fork_num ; ++i){
+                pid =fork();
+                
+                if (pid==0){
+                    for (int j = 0; j < 100; j++)
+                    {
+                        printf(1,"pid=%d ,%d",getpid(),j);
+                    }
+                    exit();    
+                }
+                else{
+                    continue;
+                }
+
+            }
+            // int child_list[10];
+            int run_list[fork_num];
+            int wait_list[fork_num];
+            int create_list[fork_num];
+            int terminate_list[fork_num];
+            int sleeping_list[fork_num];
+        
+            for (int i = 0; i <fork_num ; i++)
+                {
+                    wait_and_get_info(&running_time,&waiting_time,&creation_time,&termination_time,&sleeping_time);
+                    // child_list[i]=child_ID;
+                    run_list[i]=running_time;
+                    wait_list[i]=waiting_time;
+                    create_list[i]=creation_time;
+                    terminate_list[i]=termination_time;
+                    sleeping_list[i]=sleeping_time;
+                    
+                }
+            
+
+        
+
+            int run=0;
+            int wait=0;
+            int turn=0;
+
+            for (int i = 0; i < fork_num; i++)
+                {
+                    run+=run_list[i];
+                    wait+=wait_list[i];
+                    turn+=terminate_list[i]-create_list[i]-sleeping_list[i];
+                }
+            
+            printf(1,"AVGrunning_time = %d,AVGwaiting_time= %d ,AVGturnAround =%d \n",
+                    run/fork_num,wait/fork_num,turn/fork_num);
+            AVG_TURN[j]=turn/fork_num;
         }
+        
+
+        for (j=0;j<loop_count;j++)
+            printf(1,"avg turn=%d\n",AVG_TURN[j]);
+        exit();
     }
 
-    for (int k = 0; k < 10; k++)
-        wait_and_get_info(timesArray);
-
-    
-
-    for (int k = 0; k < 10; k++)
-    {
-        WaitingTime += timesArray[k].waitingTime;
-        CBT += timesArray[k].runningTime;
-        TurnaroundTime += (timesArray[k].terminationTime - timesArray[k].creationTime);
-        
-        
-        printf(1, "Child number : %d \n", (k + 1));
-        printf(1, "Turnaround time : %d  \n", (timesArray[k].terminationTime - timesArray[k].creationTime));
-        printf(1, "CBT : %d  \n", timesArray[k].runningTime);
-        printf(1, "Waiting time : %d  \n", timesArray[k].readyTime);
-        printf(1, "\n");
-    }
-
-    // calculating parameters
-    int childNumber = 10;
-    int avgTurnaroundTime = TurnaroundTime / childNumber;
-    int avgCBT = CBT / childNumber;
-    int avgWaitingTime = WaitingTime / childNumber;
-
-    printf(1, "All Processes : \n");
-    printf(1, "Average Turnaround time : %d  \n", avgTurnaroundTime);
-    printf(1, "Average CBT : %d  \n", avgCBT);
-    printf(1, "Average Waiting time : %d  \n", avgWaitingTime);
-
-    exit();
-}
