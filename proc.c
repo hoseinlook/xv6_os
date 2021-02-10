@@ -451,6 +451,7 @@ round_robin( struct cpu * c){
       c->proc = p;
       switchuvm(p);
       p->state = RUNNING;
+      p->counter=QUANTUM-1;
 
       swtch(&(c->scheduler), p->context);
       switchkvm();
@@ -745,8 +746,11 @@ children(int pid)
   struct proc *p;
   int res = 0;
   acquire(&ptable.lock);
+  // int counter=0;
   for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
     if (p->parent->pid == pid) {
+      // childs[counter]=pid,
+      // counter++;
       if (p->pid < 10) {
         res *= 10;
         res += p->pid;

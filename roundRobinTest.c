@@ -17,14 +17,14 @@ int main(int argc, char *argv[])
     {   int j;
 
         int fork_num=100;
-        int loop_count=10;
+        int loop_count=4;
         int AVG_TURN[loop_count];
 
         for (j=0;j<loop_count;j++){
             changeQuantum(j*10+1);
-            printf(1,"QUANTUM= %d\n",j);
-            printf(1,"*************************\n");
-            printf(1,"your pid =%d\n",getpid());
+            // printf(1,"QUANTUM= %d\n",j);
+            // printf(1,"*************************\n");
+            // printf(1,"your pid =%d\n",getpid());
             int creation_time=1;
             int waiting_time=1;
             int running_time=1;
@@ -35,9 +35,9 @@ int main(int argc, char *argv[])
                 pid =fork();
                 
                 if (pid==0){
-                    for (int j = 0; j < 100; j++)
+                    for (int k = 0; k < 100; k++)
                     {
-                        printf(1,"pid=%d ,%d",getpid(),j);
+                        printf(1,"pid=%d ,%d\n",getpid(),k);
                     }
                     exit();    
                 }
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
         
 
         for (j=0;j<loop_count;j++)
-            printf(1,"avg turn=%d\n",AVG_TURN[j]);
+            printf(1,"qu= %d    avg turn=%d\n",j*10+1,AVG_TURN[j]);
         exit();
     }
 

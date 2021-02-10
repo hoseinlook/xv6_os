@@ -109,7 +109,7 @@ trap(struct trapframe *tf)
      tf->trapno == T_IRQ0+IRQ_TIMER){
     //  myproc()->counter--;
      if (myproc()->counter<=0){
-      myproc()->counter=QUANTUM;
+      // myproc()->counter=QUANTUM;
       yield();
      }}
      
