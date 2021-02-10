@@ -28,7 +28,7 @@ int getParentID(void);
 int changePolicy(int);
 int changePriority(int);
 int ps(void);
-int wait_and_get_info(struct times*);
+int wait_and_get_info(int *,int*,int*,int*,int*);
 int getSyscallCounter(int);
 int getChildren(void);
 int changeQuantum(int);

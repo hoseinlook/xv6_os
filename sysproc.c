@@ -160,17 +160,35 @@ sys_ps(void){
 int 
 sys_wait_and_get_info(void){
 
-  struct times* time;
-  argptr(0, (void*) &time, sizeof(time));
+  int *waiting_time;
+  int* running_time;
+  int * sleeping_time;
+  int * termination_time;
+  int * creation_time;
+  if (argptr(0, (char **) &running_time, sizeof(int ))<0){
+    return 12;
+  }
+  if (argptr(1, (char **) &waiting_time, sizeof(int ))<0){
+    return 13;
+  }
+  if (argptr(2, (char **) &creation_time, sizeof(int ))<0){
+    return 14;
+  }
+  if (argptr(3, (char **) &termination_time, sizeof(int ))<0){
+    return 15;
+  }
+  if (argptr(4, (char **) &sleeping_time, sizeof(int ))<0){
+    return 16;
+  }
 
-  int pid = wait_and_get_info(time);
+  int pid = wait_and_get_info(running_time,waiting_time,creation_time,termination_time,sleeping_time);
   return pid;
 }
 
 
 
 int
-sys_changeQuanum(void){
+sys_changeQuantum(void){
   int newQuantum ;
   argint(0, &newQuantum);
   int result = changeQuantum(newQuantum);
@@ -184,10 +202,10 @@ sys_get_priority(void){
 }
 int
 sys_test(void){
-  return myproc()->running_time;
+  return myproc()->counter;
 }
 int
 sys_test2(void){
-  return ticks;
+  return myproc()->sleeping_time;
 }
 

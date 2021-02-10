@@ -60,18 +60,12 @@ struct proc {
   int creation_time;
   int running_time;
   int waiting_time;
+  int sleeping_time;
+  int terminations_time;
   int counter;
 };
 
 
-struct times {
-  uint creationTime;
-  uint terminationTime;
-  uint sleepingTime;
-  uint readyTime;
-  uint runningTime;
-  uint waitingTime; 
-};
 // Process memory is laid out contiguously, low addresses first:
 //   text
 //   original data and bss

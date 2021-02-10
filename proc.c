@@ -49,6 +49,9 @@ struct proc *p;
     if (p->state== RUNNABLE){
       p->waiting_time++;
     }
+    if (p->state == SLEEPING){
+      p->sleeping_time++;
+    }
 
   }
 
@@ -141,6 +144,8 @@ found:
   p->running_time=0;
   p->waiting_time=0;
   p->counter= QUANTUM;
+  p->terminations_time=0;
+  p->sleeping_time=0;
 
   return p;
 }
@@ -294,6 +299,8 @@ exit(void)
 
   // Jump into the scheduler, never to return.
   curproc->state = ZOMBIE;
+  curproc->terminations_time=ticks;
+  curproc->counter=QUANTUM;
 
   sched();
   panic("zombie exit");
@@ -332,6 +339,9 @@ wait(void)
         p->creation_time=0;
         p->running_time=0;
         p->waiting_time=0;
+        p->terminations_time=0;
+        p->sleeping_time=0;
+        p->counter=QUANTUM;
 
         release(&ptable.lock);
         return pid;
@@ -358,7 +368,7 @@ changeQuantum(int quantum)
 
 
 int
-wait_and_get_info(int* running_time,int* waiting_time)
+wait_and_get_info(int* running_time,int* waiting_time,int* creation_time,int*termination_time,int*sleeping_time)
 {
   struct proc *p;
   int havekids, pid;
@@ -374,12 +384,11 @@ wait_and_get_info(int* running_time,int* waiting_time)
       havekids = 1;
       if(p->state == ZOMBIE){
 
-        time->waitingTime= p->termination_time - p->creation_time - p->running_time - p->sleep_time;
-        time->runningTime=p->running_time;
-        time->creationTime = p->creation_time;
-        time->readyTime = p->ready_time;
-        time->sleepingTime = p->sleep_time;
-        time->terminationTime = p->termination_time;
+        *running_time=p->running_time;
+        *waiting_time=p->waiting_time;
+        *creation_time=p->creation_time;
+        *termination_time=p->terminations_time;
+        *sleeping_time=p->sleeping_time;
         // Found one.
         pid = p->pid;
         kfree(p->kstack);
@@ -392,9 +401,11 @@ wait_and_get_info(int* running_time,int* waiting_time)
         p->state = UNUSED;
 
         p->creation_time=0;
-        p->termination_time=0;
+        p->terminations_time=0;
         p->running_time=0;
-
+        p->sleeping_time=0;
+        p->waiting_time=0;
+        p->counter=QUANTUM;
         release(&ptable.lock);
         return pid;
       }
@@ -512,7 +523,7 @@ scheduler(void)
   struct cpu *c = mycpu();
   c->proc = 0;
   MYPOLICY=0;
-  QUANTUM=10;
+  QUANTUM=5;
   for(;;){
       switch (MYPOLICY)
       {
