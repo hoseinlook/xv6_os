@@ -2,24 +2,16 @@
 #include "stat.h"
 #include "user.h"
 
-// struct times {
-//     int creationTime;
-//     int terminationTime;
-//     int sleepingTime;
-//     int readyTime;
-//     int runningTime;
-//     int waitingTime;
-// };
 
 
 
 int main(int argc, char *argv[])
     {   int j;
 
-        int fork_num=100;
+        int fork_num=10;
         int loop_count=4;
         int AVG_TURN[loop_count];
-
+        changePolicy(0);
         for (j=0;j<loop_count;j++){
             changeQuantum(j*10+1);
             // printf(1,"QUANTUM= %d\n",j);
